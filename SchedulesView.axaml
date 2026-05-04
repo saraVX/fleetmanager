@@ -1,0 +1,118 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:FleetManager.ViewModels"
+             x:Class="FleetManager.Views.SchedulesView"
+             x:DataType="vm:SchedulesViewModel">
+    
+    <ScrollViewer>
+        <StackPanel Margin="10">
+            
+            <!-- Header -->
+            <Border Background="#00BCD4" CornerRadius="8" Height="50" Margin="0,0,0,10">
+                <Grid>
+                    <Button Content="← Retour" Command="{Binding GoBackCommand}" HorizontalAlignment="Left" Margin="10,0" Background="#555" Foreground="White" Width="80" VerticalAlignment="Center" CornerRadius="5"/>
+                    <TextBlock Text="PLANIFICATION ENTRETIEN" FontSize="16" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding Schedules.Count} entretiens" FontSize="11" Foreground="#B2EBF2" HorizontalAlignment="Right" Margin="0,0,15,0" VerticalAlignment="Center"/>
+                </Grid>
+            </Border>
+            
+            <!-- Message info -->
+            <Border Background="#E0F7FA" CornerRadius="8" Margin="0,0,0,10" Padding="10">
+                <TextBlock Text="Planifiez les entretiens préventifs et suivez leur réalisation" Foreground="#006064" FontSize="12" FontWeight="Bold"/>
+            </Border>
+            
+            <!-- Statistiques -->
+            <Border Background="#F5F5F5" CornerRadius="8" Margin="0,0,0,10" Padding="10">
+                <Grid ColumnDefinitions="*,*,*">
+                    <Border Background="#4CAF50" CornerRadius="8" Margin="3" Padding="8">
+                        <StackPanel HorizontalAlignment="Center">
+                            <TextBlock Text="{Binding CompletedCount}" FontSize="22" FontWeight="Bold" Foreground="White"/>
+                            <TextBlock Text="Terminés" FontSize="11" Foreground="White"/>
+                        </StackPanel>
+                    </Border>
+                    <Border Background="#FF9800" CornerRadius="8" Margin="3" Padding="8">
+                        <StackPanel HorizontalAlignment="Center">
+                            <TextBlock Text="{Binding PendingCount}" FontSize="22" FontWeight="Bold" Foreground="White"/>
+                            <TextBlock Text="En attente" FontSize="11" Foreground="White"/>
+                        </StackPanel>
+                    </Border>
+                    <Border Background="#F44336" CornerRadius="8" Margin="3" Padding="8">
+                        <StackPanel HorizontalAlignment="Center">
+                            <TextBlock Text="{Binding UrgentCount}" FontSize="22" FontWeight="Bold" Foreground="White"/>
+                            <TextBlock Text="Urgents" FontSize="11" Foreground="White"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </Border>
+            
+            <!-- Liste -->
+            <Border Background="#F5F5F5" CornerRadius="8" Margin="0,0,0,10" Padding="10">
+                <StackPanel>
+                    <TextBlock Text="Entretiens programmés" FontSize="14" FontWeight="Bold" Foreground="#333" Margin="0,0,0,10"/>
+                    <ListBox ItemsSource="{Binding Schedules}" SelectedItem="{Binding SelectedSchedule}" Height="250">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="White" CornerRadius="6" Margin="5" Padding="10" BorderBrush="#E0E0E0" BorderThickness="1">
+                                    <Grid ColumnDefinitions="80,*,100">
+                                        <Border Background="#00BCD4" CornerRadius="6" Width="50" Height="50" HorizontalAlignment="Center">
+                                            <TextBlock Text="📅" FontSize="24" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                        <StackPanel Grid.Column="1" Margin="10,0">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock FontWeight="Bold" FontSize="14" Foreground="#00BCD4">
+                                                    <Run Text="{Binding Vehicle.Brand}"/> <Run Text="{Binding Vehicle.Model}"/>
+                                                </TextBlock>
+                                            </StackPanel>
+                                            <TextBlock FontSize="13" FontWeight="SemiBold" Margin="0,5,0,0">
+                                                <Run Text="{Binding Title}"/>
+                                            </TextBlock>
+                                            <WrapPanel Margin="0,5,0,0">
+                                                <Border Background="#E3F2FD" CornerRadius="10" Padding="6,2">
+                                                    <TextBlock Text="{Binding ScheduledDate, StringFormat='dd/MM/yyyy'}" FontSize="11" Foreground="#1565C0"/>
+                                                </Border>
+                                                <Border Background="#FFF3E0" CornerRadius="10" Padding="6,2" Margin="5,0">
+                                                    <TextBlock Text="{Binding Type}" FontSize="11" Foreground="#E65100"/>
+                                                </Border>
+                                                <Border Background="#E8F5E9" CornerRadius="10" Padding="6,2">
+                                                    <TextBlock Text="{Binding EstimatedCost} €" FontSize="11" Foreground="#2E7D32"/>
+                                                </Border>
+                                            </WrapPanel>
+                                        </StackPanel>
+                                        <CheckBox Grid.Column="2" IsChecked="{Binding IsDone}" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
+            </Border>
+            
+            <!-- Boutons -->
+            <Border Background="#F5F5F5" CornerRadius="8" Padding="12" Margin="0,0,0,10">
+                <Grid ColumnDefinitions="*,*,*">
+                    <Button Grid.Column="0" Content="Ajouter" Command="{Binding NewScheduleCommand}" Background="#4CAF50" Foreground="White" Height="40" CornerRadius="5" FontWeight="Bold" Margin="5"/>
+                    <Button Grid.Column="1" Content="Modifier" Command="{Binding EditScheduleCommand}" Background="#FF9800" Foreground="White" Height="40" CornerRadius="5" FontWeight="Bold" Margin="5"/>
+                    <Button Grid.Column="2" Content="Supprimer" Command="{Binding DeleteScheduleCommand}" Background="#F44336" Foreground="White" Height="40" CornerRadius="5" FontWeight="Bold" Margin="5"/>
+                </Grid>
+            </Border>
+            
+            <!-- Formulaire -->
+            <Border Background="White" CornerRadius="8" Padding="20" IsVisible="{Binding IsEditing}" BorderBrush="#00BCD4" BorderThickness="2">
+                <StackPanel>
+                    <TextBlock Text="Formulaire planification" FontSize="16" FontWeight="Bold" Foreground="#00BCD4" Margin="0,0,0,20" HorizontalAlignment="Center"/>
+                    
+                    <TextBox Watermark="ID Véhicule (1-4)" Text="{Binding FormVehicleId}" Margin="0,0,0,10" Height="35" CornerRadius="5"/>
+                    <TextBox Watermark="Titre" Text="{Binding FormTitle}" Margin="0,0,0,10" Height="35" CornerRadius="5"/>
+                    <DatePicker SelectedDate="{Binding FormScheduledDate}" Margin="0,0,0,10" Height="35" CornerRadius="5"/>
+                    <TextBox Watermark="Type" Text="{Binding FormType}" Margin="0,0,0,10" Height="35" CornerRadius="5"/>
+                    <TextBox Watermark="Coût estimé (€)" Text="{Binding FormEstimatedCost}" Margin="0,0,0,15" Height="35" CornerRadius="5"/>
+                    
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Button Content="Enregistrer" Command="{Binding SaveScheduleCommand}" Background="#4CAF50" Foreground="White" Width="130" Height="40" CornerRadius="5" FontWeight="Bold" Margin="5"/>
+                        <Button Content="Annuler" Command="{Binding CancelEditCommand}" Background="#9E9E9E" Foreground="White" Width="130" Height="40" CornerRadius="5" FontWeight="Bold" Margin="5"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

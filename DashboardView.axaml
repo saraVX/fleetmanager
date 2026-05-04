@@ -1,0 +1,89 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:FleetManager.ViewModels"
+             x:Class="FleetManager.Views.DashboardView"
+             x:DataType="vm:DashboardViewModel">
+    
+    <Grid RowDefinitions="Auto,Auto,*" Margin="10">
+        
+        <!-- Header -->
+        <Border Grid.Row="0" Background="#1A237E" CornerRadius="8" Margin="0,0,0,10">
+            <Grid Height="70">
+                <StackPanel Margin="15,0" VerticalAlignment="Center">
+                    <TextBlock Text="{Binding WelcomeMessage}" FontSize="18" FontWeight="Bold" Foreground="White"/>
+                    <TextBlock Text="{Binding CurrentUserRole}" FontSize="12" Foreground="#B0BEC5"/>
+                </StackPanel>
+                <Button Content="Déconnexion" Command="{Binding LogoutCommand}" HorizontalAlignment="Right" Margin="0,0,15,0" Background="#D32F2F" Foreground="White" Width="100" VerticalAlignment="Center" CornerRadius="5"/>
+            </Grid>
+        </Border>
+        
+        <!-- Alertes -->
+        <Border Grid.Row="1" Background="#FFF3E0" CornerRadius="8" Margin="0,0,0,10" Padding="10" IsVisible="{Binding HasAlerts}">
+            <TextBlock Text="{Binding Alerts}" Foreground="#E65100" FontSize="12" FontWeight="Bold"/>
+        </Border>
+        
+        <!-- Menu principal -->
+        <ScrollViewer Grid.Row="2">
+            <StackPanel>
+                <Border Background="#F5F5F5" CornerRadius="8" Padding="15" Margin="0,0,0,10">
+                    <WrapPanel>
+                        <Button Content="🚗 Véhicules" Command="{Binding GoToVehiclesCommand}" Background="#1976D2" Foreground="White" Margin="5" Width="110" Height="50" CornerRadius="5"/>
+                        <Button Content="🔧 Entretien" Command="{Binding GoToMaintenancesCommand}" Background="#FF9800" Foreground="White" Margin="5" Width="110" Height="50" CornerRadius="5"/>
+                        <Button Content="⛽ Carburant" Command="{Binding GoToFuelCommand}" Background="#4CAF50" Foreground="White" Margin="5" Width="110" Height="50" CornerRadius="5"/>
+                        <Button Content="📋 Assurances" Command="{Binding GoToInsurancesCommand}" Background="#9C27B0" Foreground="White" Margin="5" Width="110" Height="50" CornerRadius="5"/>
+                        <Button Content="👥 Conducteurs" Command="{Binding GoToDriversCommand}" Background="#607D8B" Foreground="White" Margin="5" Width="110" Height="50" CornerRadius="5"/>
+                        <Button Content="📅 Planification" Command="{Binding GoToSchedulesCommand}" Background="#00BCD4" Foreground="White" Margin="5" Width="110" Height="50" CornerRadius="5"/>
+                        <Button Content="💰 Budget" Command="{Binding GoToBudgetsCommand}" Background="#3F51B5" Foreground="White" Margin="5" Width="110" Height="50" CornerRadius="5"/>
+                        <Button Content="📊 Statistiques" Command="{Binding GoToStatisticsCommand}" Background="#1A237E" Foreground="White" Margin="5" Width="110" Height="50" CornerRadius="5"/>
+                        <Button Content="👤 Profil" Command="{Binding GoToProfileCommand}" Background="#795548" Foreground="White" Margin="5" Width="110" Height="50" CornerRadius="5"/>
+                        <!-- Bouton Utilisateurs uniquement pour admin -->
+                        <Button Content="👥 Utilisateurs" Command="{Binding GoToUsersCommand}" Background="#F44336" Foreground="White" Margin="5" Width="110" Height="50" CornerRadius="5" IsVisible="{Binding IsAdmin}"/>
+                    </WrapPanel>
+                </Border>
+                
+                <!-- Aperçu rapide -->
+                <TextBlock Text="📊 APERÇU RAPIDE" FontSize="14" FontWeight="Bold" Foreground="#333" Margin="5,0,5,10"/>
+                <Grid ColumnDefinitions="*,*,*">
+                    <Border Background="White" CornerRadius="8" Margin="3" Padding="10" BorderBrush="#E0E0E0" BorderThickness="1">
+                        <StackPanel HorizontalAlignment="Center">
+                            <TextBlock Text="{Binding TotalVehicles}" FontSize="22" FontWeight="Bold" Foreground="#1976D2"/>
+                            <TextBlock Text="Véhicules" Foreground="Gray" FontSize="11"/>
+                        </StackPanel>
+                    </Border>
+                    <Border Background="White" CornerRadius="8" Margin="3" Padding="10" BorderBrush="#E0E0E0" BorderThickness="1">
+                        <StackPanel HorizontalAlignment="Center">
+                            <TextBlock Text="{Binding AvailableVehicles}" FontSize="22" FontWeight="Bold" Foreground="#4CAF50"/>
+                            <TextBlock Text="Disponibles" Foreground="Gray" FontSize="11"/>
+                        </StackPanel>
+                    </Border>
+                    <Border Background="White" CornerRadius="8" Margin="3" Padding="10" BorderBrush="#E0E0E0" BorderThickness="1">
+                        <StackPanel HorizontalAlignment="Center">
+                            <TextBlock Text="{Binding VehiclesInMaintenance}" FontSize="22" FontWeight="Bold" Foreground="#FF9800"/>
+                            <TextBlock Text="Maintenance" Foreground="Gray" FontSize="11"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+                <Grid ColumnDefinitions="*,*,*" Margin="0,5,0,0">
+                    <Border Background="White" CornerRadius="8" Margin="3" Padding="10" BorderBrush="#E0E0E0" BorderThickness="1">
+                        <StackPanel HorizontalAlignment="Center">
+                            <TextBlock Text="{Binding AverageFuelConsumption}" FontSize="22" FontWeight="Bold" Foreground="#9C27B0"/>
+                            <TextBlock Text="L/100km" Foreground="Gray" FontSize="11"/>
+                        </StackPanel>
+                    </Border>
+                    <Border Background="White" CornerRadius="8" Margin="3" Padding="10" BorderBrush="#E0E0E0" BorderThickness="1">
+                        <StackPanel HorizontalAlignment="Center">
+                            <TextBlock Text="{Binding TotalMaintenanceCost}" FontSize="22" FontWeight="Bold" Foreground="#F44336"/>
+                            <TextBlock Text="Entretien (€)" Foreground="Gray" FontSize="11"/>
+                        </StackPanel>
+                    </Border>
+                    <Border Background="White" CornerRadius="8" Margin="3" Padding="10" BorderBrush="#E0E0E0" BorderThickness="1">
+                        <StackPanel HorizontalAlignment="Center">
+                            <TextBlock Text="{Binding TotalMileage}" FontSize="22" FontWeight="Bold" Foreground="#795548"/>
+                            <TextBlock Text="Km totaux" Foreground="Gray" FontSize="11"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

@@ -1,0 +1,71 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:FleetManager.ViewModels"
+             x:Class="FleetManager.Views.BudgetsView"
+             x:DataType="vm:BudgetsViewModel">
+    
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <Border Grid.Row="0" Background="#3F51B5" CornerRadius="8" Height="50" Margin="0,0,0,10">
+            <Grid>
+                <Button Content="← Retour" Command="{Binding GoBackCommand}" HorizontalAlignment="Left" Margin="10,0" Background="#555" Foreground="White" Width="80" VerticalAlignment="Center"/>
+                <TextBlock Text="GESTION DU BUDGET" FontSize="16" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Grid>
+        </Border>
+        
+        <ListBox Grid.Row="1" ItemsSource="{Binding Budgets}" SelectedItem="{Binding SelectedBudget}" Height="200" Margin="0,0,0,10">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Border Background="#FAFAFA" CornerRadius="6" Margin="5" Padding="10" BorderBrush="#DDD" BorderThickness="1">
+                        <Grid ColumnDefinitions="100,*">
+                            <Border Background="#3F51B5" CornerRadius="6" Width="80" Height="50">
+                                <TextBlock Text="💰" FontSize="24" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <StackPanel>
+                                <TextBlock FontWeight="Bold" FontSize="14" Foreground="#3F51B5">
+                                    <Run Text="{Binding Vehicle.Brand}"/> <Run Text="{Binding Vehicle.Model}"/>
+                                </TextBlock>
+                                <TextBlock FontSize="11" Foreground="#666">
+                                    <Run Text="Mois: {Binding Month}/{Binding Year}"/>
+                                </TextBlock>
+                                <TextBlock FontSize="11" Foreground="#4CAF50">
+                                    <Run Text="Prévu: {Binding PlannedAmount} €"/>
+                                </TextBlock>
+                                <TextBlock FontSize="11" Foreground="#F44336">
+                                    <Run Text="Réel: {Binding ActualAmount} €"/>
+                                </TextBlock>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        
+        <Border Grid.Row="2" Background="#F0F0F0" CornerRadius="8" Padding="10" Margin="0,0,0,10">
+            <Button Content="➕ Ajouter un budget" Command="{Binding NewCommand}" Background="#4CAF50" Foreground="White" Width="150" Height="40" HorizontalAlignment="Center"/>
+        </Border>
+        
+        <Border Grid.Row="3" Background="White" CornerRadius="8" Padding="15" IsVisible="{Binding IsEditing}" BorderBrush="#3F51B5" BorderThickness="2">
+            <StackPanel>
+                <TextBlock Text="Formulaire budget" FontSize="16" FontWeight="Bold" Foreground="#3F51B5" Margin="0,0,0,15"/>
+                <TextBox Watermark="ID Véhicule (1-4)" Text="{Binding FormVehicleId}" Margin="0,0,0,10" Height="35"/>
+                <Grid ColumnDefinitions="*,*">
+                    <TextBox Watermark="Mois (1-12)" Text="{Binding FormMonth}" Margin="0,0,5,10" Height="35"/>
+                    <TextBox Watermark="Année" Text="{Binding FormYear}" Margin="5,0,0,10" Height="35"/>
+                </Grid>
+                <TextBox Watermark="Budget prévu (€)" Text="{Binding FormPlannedAmount}" Margin="0,0,0,10" Height="35"/>
+                <TextBox Watermark="Dépenses réelles (€)" Text="{Binding FormActualAmount}" Margin="0,0,0,15" Height="35"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="15">
+                    <Button Content="💾 Enregistrer" Command="{Binding SaveCommand}" Background="#4CAF50" Foreground="White" Width="120" Height="40"/>
+                    <Button Content="❌ Annuler" Command="{Binding CancelCommand}" Background="#9E9E9E" Foreground="White" Width="120" Height="40"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

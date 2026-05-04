@@ -1,0 +1,73 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:FleetManager.ViewModels"
+             x:Class="FleetManager.Views.VehiclesView"
+             x:DataType="vm:VehiclesViewModel">
+    
+    <ScrollViewer>
+        <StackPanel Margin="10">
+            
+            <Border Background="#2196F3" CornerRadius="8" Height="50" Margin="0,0,0,10">
+                <Grid>
+                    <Button Content="← Retour" Command="{Binding GoBackCommand}" HorizontalAlignment="Left" Margin="10,0" Background="#555" Foreground="White" Width="80" VerticalAlignment="Center"/>
+                    <TextBlock Text="GESTION DES VEHICULES" FontSize="16" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Grid>
+            </Border>
+            
+            <TextBox Watermark="🔍 Rechercher..." Text="{Binding SearchText}" Margin="0,0,0,10" Height="35"/>
+            
+            <ListBox ItemsSource="{Binding Vehicles}" SelectedItem="{Binding SelectedVehicle}" Height="250" Margin="0,0,0,10">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Border Background="#FAFAFA" CornerRadius="6" Margin="5" Padding="10" BorderBrush="#DDD" BorderThickness="1">
+                            <StackPanel>
+                                <TextBlock FontWeight="Bold" FontSize="14">
+                                    <Run Text="{Binding Brand}"/> <Run Text="{Binding Model}"/> - <Run Text="{Binding Year}"/>
+                                </TextBlock>
+                                <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                                    <Border Background="#E3F2FD" CornerRadius="10" Padding="6,2">
+                                        <TextBlock Text="{Binding LicensePlate}" FontSize="11"/>
+                                    </Border>
+                                    <Border Background="#FFF3E0" CornerRadius="10" Padding="6,2" Margin="5,0">
+                                        <TextBlock Text="{Binding Color}" FontSize="11"/>
+                                    </Border>
+                                </StackPanel>
+                                <TextBlock FontSize="11" Foreground="#666" Margin="0,4,0,0">
+                                    <Run Text="{Binding Mileage} km"/> | <Run Text="{Binding FuelConsumption} L/100km"/> | <Run Text="{Binding Status}"/>
+                                </TextBlock>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            
+            <Border Background="#F0F0F0" CornerRadius="8" Padding="10" Margin="0,0,0,10">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="15">
+                    <Button Content="➕ Ajouter" Command="{Binding NewVehicleCommand}" Background="#4CAF50" Foreground="White" Width="100" Height="40"/>
+                    <Button Content="✏ Modifier" Command="{Binding EditVehicleCommand}" Background="#FF9800" Foreground="White" Width="100" Height="40"/>
+                    <Button Content="🗑 Supprimer" Command="{Binding DeleteVehicleCommand}" Background="#F44336" Foreground="White" Width="100" Height="40"/>
+                </StackPanel>
+            </Border>
+            
+            <Border Background="White" CornerRadius="8" Padding="15" IsVisible="{Binding IsEditing}" BorderBrush="#2196F3" BorderThickness="2">
+                <StackPanel>
+                    <TextBlock Text="Modifier le véhicule" FontSize="16" FontWeight="Bold" Foreground="#2196F3" Margin="0,0,0,15"/>
+                    
+                    <TextBox Watermark="Plaque" Text="{Binding FormLicensePlate}" Margin="0,0,0,10" Height="35"/>
+                    <TextBox Watermark="Marque" Text="{Binding FormBrand}" Margin="0,0,0,10" Height="35"/>
+                    <TextBox Watermark="Modèle" Text="{Binding FormModel}" Margin="0,0,0,10" Height="35"/>
+                    <TextBox Watermark="Année" Text="{Binding FormYear}" Margin="0,0,0,10" Height="35"/>
+                    <TextBox Watermark="Couleur" Text="{Binding FormColor}" Margin="0,0,0,10" Height="35"/>
+                    <TextBox Watermark="Kilométrage" Text="{Binding FormMileage}" Margin="0,0,0,10" Height="35"/>
+                    <TextBox Watermark="Consommation" Text="{Binding FormFuelConsumption}" Margin="0,0,0,10" Height="35"/>
+                    <ComboBox ItemsSource="{Binding StatusList}" SelectedItem="{Binding FormStatus}" Margin="0,0,0,15" Height="35"/>
+                    
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="15">
+                        <Button Content="💾 Enregistrer" Command="{Binding SaveVehicleCommand}" Background="#4CAF50" Foreground="White" Width="120" Height="40"/>
+                        <Button Content="❌ Annuler" Command="{Binding CancelEditCommand}" Background="#9E9E9E" Foreground="White" Width="120" Height="40"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

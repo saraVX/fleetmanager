@@ -1,0 +1,73 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:FleetManager.ViewModels"
+             x:Class="FleetManager.Views.InsurancesView"
+             x:DataType="vm:InsurancesViewModel">
+    
+    <ScrollViewer>
+        <StackPanel Margin="10">
+            
+            <!-- Header -->
+            <Border Background="#9C27B0" CornerRadius="8" Height="50" Margin="0,0,0,10">
+                <Grid>
+                    <Button Content="← Retour" Command="{Binding GoBackCommand}" HorizontalAlignment="Left" Margin="10,0" Background="#555" Foreground="White" Width="80" VerticalAlignment="Center"/>
+                    <TextBlock Text="ASSURANCES" FontSize="16" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Grid>
+            </Border>
+            
+            <!-- Liste -->
+            <ListBox ItemsSource="{Binding Insurances}" SelectedItem="{Binding SelectedInsurance}" Height="250" Margin="0,0,0,10">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Border Background="White" CornerRadius="6" Margin="5" Padding="10" BorderBrush="#E0E0E0" BorderThickness="1">
+                            <StackPanel>
+                                <TextBlock FontWeight="Bold" FontSize="14" Foreground="#9C27B0">
+                                    <Run Text="{Binding Vehicle.Brand}"/> <Run Text="{Binding Vehicle.Model}"/>
+                                </TextBlock>
+                                <TextBlock FontSize="12" Foreground="#555" Margin="0,5,0,0">
+                                    <Run Text="Compagnie: "/><Run Text="{Binding Company}" FontWeight="SemiBold"/>
+                                </TextBlock>
+                                <TextBlock FontSize="12" Foreground="#555">
+                                    <Run Text="Police: "/><Run Text="{Binding PolicyNumber}"/>
+                                </TextBlock>
+                                <TextBlock FontSize="12" Foreground="#555">
+                                    <Run Text="Validité: "/><Run Text="{Binding StartDate, StringFormat='dd/MM/yyyy'}"/> → <Run Text="{Binding EndDate, StringFormat='dd/MM/yyyy'}"/>
+                                </TextBlock>
+                                <TextBlock FontSize="12" Foreground="#F44336" FontWeight="Bold">
+                                    <Run Text="Coût: "/><Run Text="{Binding Cost}"/> €
+                                </TextBlock>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            
+            <!-- Boutons -->
+            <Border Background="#F5F5F5" CornerRadius="8" Padding="10" Margin="0,0,0,10">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="15">
+                    <Button Content="Ajouter" Command="{Binding NewCommand}" Background="#4CAF50" Foreground="White" Width="90" Height="35"/>
+                    <Button Content="Modifier" Command="{Binding EditCommand}" Background="#FF9800" Foreground="White" Width="90" Height="35"/>
+                    <Button Content="Supprimer" Command="{Binding DeleteCommand}" Background="#F44336" Foreground="White" Width="90" Height="35"/>
+                    <Button Content="Annuler" Command="{Binding CancelCommand}" Background="#9E9E9E" Foreground="White" Width="90" Height="35" IsVisible="{Binding IsEditing}"/>
+                </StackPanel>
+            </Border>
+            
+            <!-- Formulaire -->
+            <Border Background="White" CornerRadius="8" Padding="15" IsVisible="{Binding IsEditing}" BorderBrush="#9C27B0" BorderThickness="2">
+                <StackPanel>
+                    <TextBlock Text="Formulaire assurance" FontSize="16" FontWeight="Bold" Foreground="#9C27B0" Margin="0,0,0,15"/>
+                    <TextBox Watermark="ID Véhicule (1-4)" Text="{Binding FormVehicleId}" Margin="0,0,0,10" Height="35"/>
+                    <TextBox Watermark="Compagnie" Text="{Binding FormCompany}" Margin="0,0,0,10" Height="35"/>
+                    <TextBox Watermark="N° Police" Text="{Binding FormPolicyNumber}" Margin="0,0,0,10" Height="35"/>
+                    <DatePicker SelectedDate="{Binding FormStartDate}" Margin="0,0,0,10" Height="35"/>
+                    <DatePicker SelectedDate="{Binding FormEndDate}" Margin="0,0,0,10" Height="35"/>
+                    <TextBox Watermark="Coût (€)" Text="{Binding FormCost}" Margin="0,0,0,15" Height="35"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="15">
+                        <Button Content="Enregistrer" Command="{Binding SaveCommand}" Background="#4CAF50" Foreground="White" Width="120" Height="35"/>
+                        <Button Content="Annuler" Command="{Binding CancelCommand}" Background="#9E9E9E" Foreground="White" Width="120" Height="35"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

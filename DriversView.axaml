@@ -1,0 +1,74 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:FleetManager.ViewModels"
+             x:Class="FleetManager.Views.DriversView"
+             x:DataType="vm:DriversViewModel">
+    
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <Border Grid.Row="0" Background="#607D8B" CornerRadius="8" Height="50" Margin="0,0,0,10">
+            <Grid>
+                <Button Content="← Retour" Command="{Binding GoBackCommand}" HorizontalAlignment="Left" Margin="10,0" Background="#555" Foreground="White" Width="80" VerticalAlignment="Center"/>
+                <TextBlock Text="GESTION DES CONDUCTEURS" FontSize="16" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Grid>
+        </Border>
+        
+        <ListBox Grid.Row="1" ItemsSource="{Binding Drivers}" SelectedItem="{Binding SelectedDriver}" Height="200" Margin="0,0,0,10">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Border Background="#FAFAFA" CornerRadius="6" Margin="5" Padding="10" BorderBrush="#DDD" BorderThickness="1">
+                        <Grid ColumnDefinitions="100,*">
+                            <Border Background="#607D8B" CornerRadius="6" Width="80" Height="50">
+                                <TextBlock Text="👤" FontSize="24" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <StackPanel>
+                                <TextBlock FontWeight="Bold" FontSize="14" Foreground="#607D8B">
+                                    <Run Text="{Binding FirstName}"/> <Run Text="{Binding LastName}"/>
+                                </TextBlock>
+                                <TextBlock FontSize="11" Foreground="#666">
+                                    <Run Text="Permis: {Binding LicenseNumber}"/> | <Run Text="Expire: {Binding LicenseExpiry, StringFormat='dd/MM/yyyy'}"/>
+                                </TextBlock>
+                                <TextBlock FontSize="11" Foreground="#666">
+                                    <Run Text="Tel: {Binding Phone}"/> | <Run Text="Email: {Binding Email}"/>
+                                </TextBlock>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        
+        <Border Grid.Row="2" Background="#F0F0F0" CornerRadius="8" Padding="10" Margin="0,0,0,10">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="15">
+                <Button Content="➕ Ajouter" Command="{Binding NewCommand}" Background="#4CAF50" Foreground="White" Width="100" Height="40"/>
+                <Button Content="✏ Modifier" Command="{Binding EditCommand}" Background="#FF9800" Foreground="White" Width="100" Height="40"/>
+                <Button Content="🗑 Supprimer" Command="{Binding DeleteCommand}" Background="#F44336" Foreground="White" Width="100" Height="40"/>
+                <Button Content="❌ Annuler" Command="{Binding CancelCommand}" Background="#9E9E9E" Foreground="White" Width="100" Height="40" IsVisible="{Binding IsEditing}"/>
+            </StackPanel>
+        </Border>
+        
+        <Border Grid.Row="3" Background="White" CornerRadius="8" Padding="15" IsVisible="{Binding IsEditing}" BorderBrush="#607D8B" BorderThickness="2">
+            <StackPanel>
+                <TextBlock Text="Formulaire conducteur" FontSize="16" FontWeight="Bold" Foreground="#607D8B" Margin="0,0,0,15"/>
+                <Grid ColumnDefinitions="*,*">
+                    <TextBox Watermark="Prénom" Text="{Binding FormFirstName}" Margin="0,0,5,10" Height="35"/>
+                    <TextBox Watermark="Nom" Text="{Binding FormLastName}" Margin="5,0,0,10" Height="35"/>
+                </Grid>
+                <TextBox Watermark="N° Permis" Text="{Binding FormLicenseNumber}" Margin="0,0,0,10" Height="35"/>
+                <DatePicker SelectedDate="{Binding FormLicenseExpiry}" Margin="0,0,0,10" Height="35"/>
+                <TextBox Watermark="Téléphone" Text="{Binding FormPhone}" Margin="0,0,0,10" Height="35"/>
+                <TextBox Watermark="Email" Text="{Binding FormEmail}" Margin="0,0,0,15" Height="35"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="15">
+                    <Button Content="💾 Enregistrer" Command="{Binding SaveCommand}" Background="#4CAF50" Foreground="White" Width="120" Height="40"/>
+                    <Button Content="❌ Annuler" Command="{Binding CancelCommand}" Background="#9E9E9E" Foreground="White" Width="120" Height="40"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>
